@@ -15,7 +15,7 @@ class Inference:
 
 
       self.cuda_idx = cuda_idx
-      #self.cfx = cuda.Device( self.cuda_idx ).make_context()
+      self.cfx = cuda.Device( self.cuda_idx ).make_context()
       self.stream = cuda.Stream()
 
 
@@ -118,8 +118,8 @@ class Inference:
          The list of output images
 
       """
-      #threading.Thread.__init__(self)
-      #self.cfx.push()
+      threading.Thread.__init__(self)
+      self.cfx.push()
 
       #-----------------------------------
       stream  = self.stream
