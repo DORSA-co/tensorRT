@@ -1,8 +1,5 @@
 import os
 
-os.system("ls")
-
-
 
 def pb2onnx(input_path, ouput_path):
     command = 'python -m tf2onnx.convert --saved-model {} --output {}'.format(

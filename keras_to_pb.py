@@ -5,7 +5,7 @@ from tensorflow.keras.models import Model
 import tensorflow.keras.backend as K
 from tensorflow.python.framework.convert_to_constants import convert_variables_to_constants_v2
 import os
-from keras2onnx import convert_keras
+#from keras2onnx import convert_keras
 
 K.set_learning_phase(0)
 
@@ -84,11 +84,19 @@ def keras_to_onnx(model, output_filename): #for .hdf5
 if __name__=='__main__':
     
 
-    model = keras.applications.resnet.ResNet50(include_top=True, weights='imagenet', input_tensor=None, input_shape=None, pooling=None, classes=1000)
-
+    model = keras.applications.resnet.ResNet50(include_top=True, weights=None, input_tensor=None, input_shape=None, pooling=None, classes=1000)
+    
+    import numpy as np
+    x = np.random.rand(512,224,224,3)
+    y = np.zeros((512,1000))
+    #y[ np.arange(512) , np.random.randint(0,1000,512)]=1
+    y[:,7]=1
+    model.compile(loss='categorical_crossentropy')
+    model.fit(x,y, epochs=10, batch_size=32)
 
     #in_tensor_name, out_tensor_names = keras_to_pb_nvidia(model, "models2/resnet50.pb", None) 
     keras_to_pb2(model, 'model/')
+    model.save('model.h5')
     
 #    from keras2onnx import convert_keras
     

@@ -3,9 +3,13 @@ import argparse
 from onnx import ModelProto
 import tensorrt as trt 
 
+#import os
+#os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+#os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+
 engine_name = "resnet50.plan"
 onnx_path = "resnet50.onnx"
-batch_size = 64
+batch_size = 1
 
 model = ModelProto()
 with open(onnx_path, "rb") as f:
