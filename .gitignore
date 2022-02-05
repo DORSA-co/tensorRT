@@ -1,3 +1,4 @@
 *.onnx
 model/*
 *.plan
+*.h5

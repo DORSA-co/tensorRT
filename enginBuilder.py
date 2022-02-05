@@ -9,7 +9,7 @@ import tensorrt as trt
 
 engine_name = "resnet50.plan"
 onnx_path = "resnet50.onnx"
-batch_size = 1
+batch_size = 8
 
 model = ModelProto()
 with open(onnx_path, "rb") as f:

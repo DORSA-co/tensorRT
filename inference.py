@@ -55,7 +55,7 @@ class Inference:
       bindings = []
       #bindings are inputs and outputs
       for i in range(len(self.engine)):
-         size = trt.volume( self.engine.get_binding_shape(i)[:] ) * batch_size # * self.engine.max_batch_size
+         size = trt.volume( self.engine.get_binding_shape(i)[:] )* self.engine.max_batch_size
          host_mem = cuda.pagelocked_empty(size, dtype=trt.nptype(data_type) )
          cuda_mem = cuda.mem_alloc(host_mem.nbytes)
 
