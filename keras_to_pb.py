@@ -90,7 +90,7 @@ if __name__=='__main__':
     x = np.random.rand(512,224,224,3)
     y = np.zeros((512,1000))
     #y[ np.arange(512) , np.random.randint(0,1000,512)]=1
-    y[:,9]=1
+    y[:,7]=1
     model.compile(loss='categorical_crossentropy')
     model.fit(x,y, epochs=10, batch_size=32)
 

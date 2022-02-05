@@ -1,8 +1,6 @@
 
 import tensorrt as trt
 
-TRT_LOGGER = trt.Logger(trt.Logger.WARNING)
-trt_runtime = trt.Runtime(TRT_LOGGER)
 
 
 def build_engine(onnx_path, shape = [1,224,224,3], precision='fp16'):
@@ -13,7 +11,15 @@ def build_engine(onnx_path, shape = [1,224,224,3], precision='fp16'):
     onnx_path : Path to onnx_file. 
     shape : Shape of the input of the ONNX file. 
     """
-  
+    #os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+    #os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+    
+    TRT_LOGGER = trt.Logger(trt.Logger.INFO)
+    trt.init_libnvinfer_plugins(TRT_LOGGER, '')
+    trt_runtime = trt.Runtime(TRT_LOGGER)
+
+    #os.environ['CUDA_DEVICE'] = '1'
+    
     # builder = trt.Builder(TRT_LOGGER)
     # network = builder.create_network(1 << int(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH))
     # parser = trt.OnnxParser(network, TRT_LOGGER)
@@ -33,6 +39,7 @@ def build_engine(onnx_path, shape = [1,224,224,3], precision='fp16'):
     # return serialized_engine
     with trt.Builder(TRT_LOGGER) as builder, builder.create_network( 1 << int(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH )) as network, builder.create_builder_config() as config, trt.OnnxParser(network, TRT_LOGGER) as parser:
        config.max_workspace_size = (256 << 20) #256 MiB
+       #builder.max_batch_size = 1
        if builder.platform_has_fast_fp16 and precision == 'fp16':
            print('*'*10, "___FP16___", '*'*10)
            config.set_flag(trt.BuilderFlag.FP16)

@@ -1,3 +1,4 @@
+# from tensorflow import keras
 import tensorrt as trt
 import pycuda.driver as cuda
 import numpy as np
@@ -5,26 +6,27 @@ import pycuda.autoinit
 import engine as eng
 import threading
 
-TRT_LOGGER = trt.Logger(trt.Logger.WARNING)
-trt_runtime = trt.Runtime(TRT_LOGGER)
+#TRT_LOGGER = trt.Logger(trt.Logger.WARNING)
+#trt_runtime = trt.Runtime(TRT_LOGGER)
 
 
 class Inference:
 
-   def __init__(self, engine_path, cuda_idx=0):
+   def __init__(self, engine_path,  cuda_idx=0):
 
-
+      #cuda_idx = 0
       self.cuda_idx = cuda_idx
+      print('Selected Device is {}'.format(cuda.Device( self.cuda_idx ).name()))
       self.cfx = cuda.Device( self.cuda_idx ).make_context()
       self.stream = cuda.Stream()
 
 
       TRT_LOGGER = trt.Logger(trt.Logger.INFO)
-      trt.init_libnvinfer_plugins(TRT_LOGGER, '')
+      trt.init_libnvinfer_plugins(TRT_LOGGER, '' )
       trt_runtime = trt.Runtime(TRT_LOGGER)
 
       
-      self.engine = eng.load_engine(trt_runtime, engine_path)
+      self.engine = eng.load_engine(trt_runtime, engine_path)    
       self.context = self.engine.create_execution_context()
       
    #_________________________________________________________________________________________________________________________________________
@@ -176,3 +178,8 @@ class Inference:
    #_________________________________________________________________________________________________________________________________________
    def destory(self):
         self.cfx.pop()
+
+
+# x=Inference('k',)
+
+
