@@ -149,6 +149,7 @@ class Inference:
             out = host_outputs[0]
 
       self.cfx.pop()
+	self.resault = out
       return out
 
       # with self.engine.create_execution_context() as context:
